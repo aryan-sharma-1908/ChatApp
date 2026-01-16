@@ -11,21 +11,19 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Password is required']
     },
-    firstName: {
+    name: {
         type: String,
-        required: false
+        default: ""
     },
-    lastName: {
+    avatar: {
         type: String,
-        required: false
+        required: false,
+        default: '/images/user.png'
     },
-    image: {
+    description: {
         type: String,
-        required: false
-    },
-    color: {
-        type: Number,
-        required: false
+        required: false,
+        default: ""
     },
     profileSetup: {
         type: Boolean,

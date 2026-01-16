@@ -7,12 +7,21 @@ import authRoutes from "./routes/AuthRoutes.js";
 import morgan from "morgan";
 import http from "http";
 import { Server } from "socket.io";
-
+import uploadRoutes from './routes/UploadRoutes.js';
+import profileRoutes from './routes/ProfileRoutes.js';
+import { AuthMiddleware } from "./middlewares/AuthMiddleware.js";
+import userRoutes from './routes/UserRoutes.js'
 dotenv.config();
 
 const app = express();
 const httpServer = http.createServer(app);
-const io = new Server(httpServer);
+export const io = new Server(httpServer, {
+  cors: {
+    origin: process.env.ORIGIN,
+    methods: ['GET', 'POST'],
+    credentials: true,
+  }
+});
 const PORT = process.env.PORT || 3001;
 const databaseURL = process.env.DATABASE_URL;
 
@@ -33,7 +42,9 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
-
+app.use('/api/upload', uploadRoutes);
+app.use('/api/profile', AuthMiddleware, profileRoutes);
+app.use('/api/user', AuthMiddleware, userRoutes);
 io.on("connection", (socket) => {
   console.log("A socket connected", socket.id);
   socket.on('chat_message', (msg) => {

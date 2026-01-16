@@ -16,7 +16,7 @@ const Auth = () => {
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
     const [isLoading, setIsLoading] = useState(false);
-
+    const [tab, setTab] = useState('signup');
     const handleLogin = async () => {
         setIsLoading(true);
 
@@ -34,7 +34,7 @@ const Auth = () => {
             console.log(`${email} login successful`)
             toast.success("Login Successful.")
             setTimeout(() => {
-                navigate("/chat")
+                navigate("/profile")
             }, 500)
         } catch (error) {
             console.error('Something went wrong while logging in! ', error)
@@ -43,6 +43,7 @@ const Auth = () => {
             setIsLoading(false)
             setEmail("")
             setPassword("")
+            
         }
     }
 
@@ -68,9 +69,7 @@ const Auth = () => {
 
             console.log(`${email} signup successful.`)
             toast.success('Signup successful.')
-            setTimeout(() => {
-                navigate("/chat")
-            }, 500)
+            setTab('login');
 
         } catch (error) {
             toast.error('Something went Wrong!')
@@ -84,7 +83,6 @@ const Auth = () => {
     }
     return (
         <div className='h-screen w-screen flex items-center justify-center'>
-
             <div className='h-[80vh] bg-white border-2 border-white text-opacity-90 shadow-2xl w-[80vw] md:w-[90vw] lg:w-[70vw] xl:w-[60vw] rounded-3xl grid xl:grid-cols-2'>
                 <div className='flex flex-col gap-10 items-center justify-center'>
                     <div className="flex items-center justify-center flex-col">
@@ -92,9 +90,10 @@ const Auth = () => {
                             <h1 className='text-5xl font-bold md:text-6xl text-center'>Welcome</h1>
                             <img src={Victory} alt="Victory emoji" className='h-[100px]' />
                         </div>
+                        
                         <p className='font-medium text-center'>Fill in the details to get started with the best chat app</p>
                         <div className="flex items-center justify-center w-full">
-                            <Tabs defaultValue='login' className='w-3/4'>
+                            <Tabs value={tab} onValueChange={setTab} className='w-3/4'>
                                 <TabsList className='bg-transparent rounded-none w-full'>
                                     <TabsTrigger value='login' className='data-[state=active]:bg-transparent text-black border-b-2 rounded-none w-full data-[state=active]:text-black data-[state=active]:font-semibold data-[state=active]:border-b-purple-500 p-3 transition-all duration-300 text-opacity-90'>Login</TabsTrigger>
                                     <TabsTrigger value='signup' className='data-[state=active]:bg-transparent text-black border-b-2 rounded-none w-full data-[state=active]:text-black data-[state=active]:font-semibold data-[state=active]:border-b-purple-500 p-3 transition-all duration-300 text-opacity-90'>Signup</TabsTrigger>

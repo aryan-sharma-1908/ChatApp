@@ -6,10 +6,10 @@ import { Toaster } from './components/ui/sonner'
 import { SocketProvider } from './context/SocketContext'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  <>
     <SocketProvider>
       <App />
     </SocketProvider>
     <Toaster richColors position="top-right" />
-  </StrictMode>,
+  </>,
 )

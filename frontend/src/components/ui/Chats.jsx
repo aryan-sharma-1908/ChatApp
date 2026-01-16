@@ -8,18 +8,19 @@ import AdityaProfile from '@/assets/AdityaProfile.jpeg'
 import SudhanshuProfile from '@/assets/SudhanshuProfile.jpeg'
 import RupamProfile from '@/assets/RupamProfile.jpeg'
 import PakshikProfile from '@/assets/PakshikProfile.jpeg'
+import Conversation from './Conversation'
 
 const users = [
-  { id: 1, name: "Aryan Sharma", description: "Not Available", userImage: AryanProfile },
-  { id: 2, name: "Aditya Raj", description: "Available", userImage: AdityaProfile },
-  { id: 3, name: "Sudhanshu Pal", description: "Sleeping...", userImage: SudhanshuProfile },
-  { id: 4, name: "Rupam Singh", description: "Not Available", userImage: RupamProfile },
-  { id: 5, name: "Pakshik Gangwal", description: "Available", userImage: PakshikProfile },
-  { id: 6, name: "Aryan Sharma", description: "Not Available", userImage: AryanProfile },
-  { id: 7, name: "Aditya Raj", description: "Available", userImage: AdityaProfile },
-  { id: 8, name: "Sudhanshu Pal", description: "Sleeping...", userImage: SudhanshuProfile },
-  { id: 9, name: "Rupam Singh", description: "Not Available", userImage: RupamProfile },
-  { id: 10, name: "Pakshik Gangwal", description: "Available", userImage: PakshikProfile },
+  { id: 'a2ff3b22-8d62-453e-b0d3-091a6da23ad2', name: "Aryan Sharma", description: "Not Available", userImage: AryanProfile },
+  { id: 'b3ff4c33-9e73-564f-c1e4-102b7eb34be3', name: "Aditya Raj", description: "Available", userImage: AdityaProfile },
+  { id: 'c4ff5d44-0f84-675g-d2f5-213c8fc45cf4', name: "Sudhanshu Pal", description: "Sleeping...", userImage: SudhanshuProfile },
+  { id: 'd5ff6e55-1g95-786h-e3g6-324d9gd56dg5', name: "Rupam Singh", description: "Not Available", userImage: RupamProfile },
+  { id: 'e6ff7f66-2h06-897i-f4h7-435ehhe67eh6', name: "Pakshik Gangwal", description: "Available", userImage: PakshikProfile },
+  { id: 'f7ff8g77-3i17-908j-g5i8-546fiif78fi7', name: "Aryan Sharma", description: "Not Available", userImage: AryanProfile },
+  { id: 'g8ff9h88-4j28-019k-h6j9-657gjjg89gj8', name: "Aditya Raj", description: "Available", userImage: AdityaProfile },
+  { id: 'h9ff0i99-5k39-120l-i7k0-768hkkh00hk0', name: "Sudhanshu Pal", description: "Sleeping...", userImage: SudhanshuProfile },
+  { id: 'i0ff1j00-6l40-231m-j8l1-879illl11il1', name: "Rupam Singh", description: "Not Available", userImage: RupamProfile },
+  { id: 'j1ff2k11-7m51-342n-k9m2-980jmmn22jm2', name: "Pakshik Gangwal", description: "Available", userImage: PakshikProfile },
 ]
 
 const Chats = () => {
@@ -36,7 +37,7 @@ const Chats = () => {
         <div className='sticky top-0 z-10'>
           <ChatsHeader />
         </div>
-        <div className='chat mt-5 group/users flex-1 overflow-y-auto'>
+        <div className='chat group/users flex-1 overflow-y-auto'>
           {users.map(user => (
             <Chat key={user.id} id={user.id} name={user.name} description={user.description} userImage={user.userImage} onClick={() => setActiveChatId(user.id)} isactive={isactive == user.id} />
           ))}
@@ -44,18 +45,7 @@ const Chats = () => {
         </div>
       </div>
       <div className="messages w-[75%] bg-[#F5F2F2] h-full fixed right-0">
-        {isactive ? <div>
-          <div className="messages_header absolute top-0 w-full">
-            <MessagesHeader activeUser={activeUser} />
-          </div>
-          <div className='absolute w-full bottom-0'>
-            <div className="chats_input m-2">
-              <MessageInput/>
-            </div>
-          </div>
-        </div> : ""}
-
-
+        {isactive ? <Conversation activeUser={activeUser} /> : ""}
       </div>
     </div>
   )
