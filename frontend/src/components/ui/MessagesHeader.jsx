@@ -11,7 +11,7 @@ import {
 const MessagesHeader = ({ activeUser }) => {
     if (!activeUser) return null
     return (
-        <div className='bg-white w-full h-22 shadow-md border-b-white border-l-white border-l-2 border-b-2 flex items-center justify-between p-5'>
+        <div className='bg-white w-full h-22  border-b-white border-l-white border-l-2 border-b-2 flex items-center justify-between p-5'>
             <div className="user_info gap-4 flex justify-between items-center cursor-pointer">
                 <div className="user_avatar w-14 h-14 min-w-14">
                     <Avatar className='w-full h-full shadow-md border-2 border-white'>

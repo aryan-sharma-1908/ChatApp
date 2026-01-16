@@ -25,6 +25,12 @@ const userSchema = new mongoose.Schema({
         required: false,
         default: ""
     },
+    friends: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ],
     profileSetup: {
         type: Boolean,
         default: false

@@ -32,7 +32,7 @@ const MessageInput = ({activeUser}) => {
   }
   return (
     <form className='w-full' onSubmit={handleSubmitText}>
-      <div className='w-full h-16 py-4 px-6 rounded-4xl flex bg-white items-center shadow-md gap-4' >
+      <div className='w-full h-16 py-4 px-6 rounded-4xl flex bg-white items-center shadow-md gap-4 border border-gray-500/70' >
         <IoIosAttach className='text-xl cursor-pointer active:scale-95 ' />
         <Textarea className='w-full flex-1 focus-visible:ring-0 focus-visible:ring-offset-0 outline-0! ring-0! border-0! min-h-8 text-[18px]! text-[#060505c4] font-medium max-h-12 resize-none' value={text} onChange={(e) => setText(e.target.value)} />
         <Button type='submit' className=' cursor-pointer active:scale-95 p-0 bg-transparent! hover:bg-transparent!'>

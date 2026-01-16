@@ -44,7 +44,7 @@ const Chats = () => {
 
         </div>
       </div>
-      <div className="messages w-[75%] bg-[#F5F2F2] h-full fixed right-0">
+      <div className="messages w-[75%] bg-[url(/conversationbg.jpg)] h-full fixed right-0">
         {isactive ? <Conversation activeUser={activeUser} /> : ""}
       </div>
     </div>

@@ -10,7 +10,7 @@ const ChatsHeader = () => {
         <Addfriends />
       </div>
 
-      <div className='px-4 pb-4'>
+      <div className='px-4'>
         <InputGroup className="rounded-4xl focus-within:ring-0!">
           <InputGroupInput
             placeholder="Search..."
