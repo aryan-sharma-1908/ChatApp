@@ -11,23 +11,22 @@ import { Button } from './button'
 import { FiPlusCircle } from "react-icons/fi";
 import apiClient from '@/lib/api-client';
 import { toast } from 'sonner';
-import { USER_ROUTES } from '@/utils/constants.js'
+import { NON_FRIENDS_ROUTES } from '@/utils/constants.js'
 import UserData from './UserData';
 const Addfriends = () => {
   const [usersData, setUsersData] = useState([]);
 
   const handleOpenUsersList = async () => {
     try {
-      const response = await apiClient.get(USER_ROUTES);
+      const response = await apiClient.get(NON_FRIENDS_ROUTES);
 
-      const users = response.data.users;
+      setUsersData(response.data.nonFriends);
 
-      setUsersData(users);
+      console.log(usersData);
 
-      console.log(usersData.usernames, usersData.userAvatars, usersData.description);
     } catch (error) {
-      console.error("Error adding friend: ", error);
-      toast.error("Failed to add friend. Please try again.")
+      console.error("Error fetching non-friends: ", error);
+      toast.error("Failed to fetch non-friends. Please try again.")
     }
   }
 

@@ -34,7 +34,7 @@ const Chats = () => {
   return (
     <div className='h-screen flex items-stretch w-full'>
       <div className="chats w-[25%] bg-white h-full shadow-md border-r-white border-r-2">
-        <div className='sticky top-0 z-10'>
+        <div className='sticky top-0 z-10 mb-1'>
           <ChatsHeader />
         </div>
         <div className='chat group/users flex-1 overflow-y-auto'>

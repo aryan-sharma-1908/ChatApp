@@ -30,7 +30,7 @@ const MessagesHeader = ({ activeUser }) => {
                     <Button size='icon-lg' className='relative overflow-hidden rounded-full
                 before:content-[""] before:bg-transparent
                 before:scale-80 hover:before:bg-[#f1f1f1] before:absolute hover:before:scale-100 before:duration-300 before:inset-0 before:rounded-full cursor-pointer transition-transform'>
-                        <TooltipTrigger>
+                        <TooltipTrigger asChild>
                             <span className='relative z-10 cursor-pointer'><SlOptionsVertical /></span>
 
                         </TooltipTrigger>

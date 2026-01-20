@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid'
 import apiClient from '@/lib/api-client.js';
 import axios from 'axios';
 
-const MessageInput = ({activeUser}) => {
+const MessageInput = ({ activeUser }) => {
   const senderId = uuidv4();
   const Socket = useContext(SocketContext);
   const [text, setText] = useState("");
@@ -21,11 +21,11 @@ const MessageInput = ({activeUser}) => {
 
     if (message === "") return;
     console.log(senderId)
-    Socket.emit("chat_message", { 
+    Socket.emit("chat_message", {
       message: message,
       recieverId: ""
     });
-    
+
     console.log("message sent: ", message);
 
     setText("");
