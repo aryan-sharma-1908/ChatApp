@@ -1,16 +1,18 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import MessagesHeader from './MessagesHeader'
 import MessageInput from './MessageInput'
+import ChatContext from '@/context/ChatContext'
 
-const Conversation = ({activeUser}) => {
+const Conversation = () => {
+  const { activeFriend } = useContext(ChatContext);
   return (
     <div>
           <div className="messages_header absolute top-0 w-full">
-            <MessagesHeader activeUser={activeUser} />
+            <MessagesHeader activeFriend={activeFriend} />
           </div>
           <div className='absolute w-full bottom-0'>
             <div className="chats_input my-2 mx-4">
-              <MessageInput activeUser={activeUser} />
+              <MessageInput activeFriend={activeFriend} />
             </div>
           </div>
         </div>

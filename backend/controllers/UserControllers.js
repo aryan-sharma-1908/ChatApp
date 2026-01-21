@@ -74,7 +74,6 @@ export const getNonFriends = async (req, res) => {
             _id: { $nin: [...user.friends, userId]}
         }).select('name avatar description');
         
-        console.log("Non-friends: ", nonFriends);
         if(nonFriends.length === 0) {
             return res.status(200).json({
                 success: true,
@@ -144,6 +143,32 @@ export const addFriendIfNotExists = async (req, res) => {
         res.status(500).json({
             success: false,
             message: "Server error while adding friend"
+        })
+    }
+}
+
+export const getFriends = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const user = await User.findById(userId).select('friends').populate('friends', 'name avatar description');
+        
+        if(!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            })
+        }
+        console.log('friends: ', user.friends);
+        res.status(200).json({
+            success: true,
+            message: "Friends fetched successfully",
+            friends: user.friends
+        })
+    } catch (error) {
+        console.error("Error in getFriends: ", error);
+        res.status(500).json({
+            success: false,
+            message: "Server error while getting friends"
         })
     }
 }

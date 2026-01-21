@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from '@/components/ui/button'
 import { SlOptionsVertical } from "react-icons/sl"
@@ -7,21 +7,24 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import ChatContext from '@/context/ChatContext'
 
-const MessagesHeader = ({ activeUser }) => {
-    if (!activeUser) return null
+const MessagesHeader = () => {
+    const { activeFriend } = useContext(ChatContext);
+
+    if (!activeFriend) return null
     return (
         <div className='bg-white w-full h-22  border-b-white border-l-white border-l-2 border-b-2 flex items-center justify-between p-5'>
             <div className="user_info gap-4 flex justify-between items-center cursor-pointer">
                 <div className="user_avatar w-14 h-14 min-w-14">
                     <Avatar className='w-full h-full shadow-md border-2 border-white'>
-                        <AvatarImage src={activeUser.userImage} className='rounded-full' />
-                        <AvatarFallback>{activeUser.name}</AvatarFallback>
+                        <AvatarImage src={activeFriend.avatar} className='rounded-full' />
+                        <AvatarFallback>{activeFriend.name}</AvatarFallback>
                     </Avatar>
                 </div>
                 <div className='flex-col justify-between items-center'>
-                    <div className="user_name text-[#2B2A2A] text-2xl font-bold">{activeUser.name}</div>
-                    <p className='font-medium text-gray-500'>click here to get {activeUser.name} info</p>
+                    <div className="user_name text-[#2B2A2A] text-2xl font-bold">{activeFriend.name}</div>
+                    <p className='font-medium text-gray-500'>click here to get {activeFriend.name} info</p>
                 </div>
 
             </div>
