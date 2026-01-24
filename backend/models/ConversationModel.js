@@ -1,31 +1,27 @@
 import mongoose from "mongoose";
 
-const ConversationSchema = new mongoose.Schema({
-    ConversationId: {
-        type: String,
+const ConversationSchema = new mongoose.Schema(
+  {
+    members: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required: true,
-        unique: true
-    },
-    members: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    }],
+      },
+    ],
     lastMessage: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Message',
-        required: false
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Message",
+      required: false,
     },
     isGroupChat: {
-        type: Boolean,
-        default: false
-    }
-}, {timestamps: true})
+      type: Boolean,
+      default: false,
+    },
+  },
+  { timestamps: true },
+);
 
-const ConversationModel = mongoose.model('Conversation', ConversationSchema);
+const Conversation = mongoose.model("Conversation", ConversationSchema);
 
-export default ConversationModel;
+export default Conversation;

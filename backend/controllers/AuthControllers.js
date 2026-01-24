@@ -32,27 +32,11 @@ export const signup = async (req, res) => {
       password
     });
 
-    const token = jwt.sign(
-      {
-        _id: newUser._id,
-        email: newUser.email,
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
-
-    res.cookie("token", token, {
-      httpOnly: process.env.NODE_ENV === "production",
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      maxAge: 24 * 60 * 60 * 1000,
-    });
-
     res.status(201).json({
       user: {
         _id: newUser._id,
         email: newUser.email,
-        profileSetup: newUser.profileSetup,
+        profileSetup: newUser.profileSetup
       },
       success: true,
       message: "User created successfully",
@@ -130,3 +114,20 @@ export const login = async (req, res) => {
     })
   }
 };
+
+
+// export const checkAuth = async (req,res) => {
+//   try {
+//     res.status(204).json({
+//       success: true,
+//       user: req.user,
+//       message: "User is Authenticated."
+//     })
+//   } catch (error) {
+//     console.error('Error in checkAuth: ', error);
+//     res.status(500).json({
+//       success: false,
+//       message: "Error occurred during checkAuth"
+//     })
+//   }
+// }

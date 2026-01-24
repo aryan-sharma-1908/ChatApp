@@ -172,3 +172,29 @@ export const getFriends = async (req, res) => {
         })
     }
 }
+
+export const getUserInfo = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const user = await User.findById(userId);
+
+        if(!user) {
+            return res.status(400).json({
+                success: false,
+                message: "User not found."
+            })
+        }
+
+        res.status(204).json({
+            success: true,
+            user,
+            message: "User found."
+        })
+    } catch (error) {
+        console.error("Error in getUserInfo: ", error);
+        res.status(500).json({
+            success: false,
+            message: "Error in getting user info"
+        })
+    }
+}

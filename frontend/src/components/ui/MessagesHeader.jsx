@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useMemo } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from '@/components/ui/button'
 import { SlOptionsVertical } from "react-icons/sl"
@@ -7,10 +7,23 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import ChatContext from '@/context/ChatContext'
+import {ChatContext} from '@/context/ChatContext'
+import { useParams } from 'react-router-dom'
 
 const MessagesHeader = () => {
-    const { activeFriend } = useContext(ChatContext);
+    const { friends } = useContext(ChatContext);
+    const { friendId } = useParams();
+    const activeFriend = useMemo(() => {
+        if (!friends?.length || !friendId) return null;
+        console.log({
+            friendId,
+            friends: friends.map(f => f._id),
+        });
+
+        return friends.find(
+            friend => friend._id.toString() === friendId
+        );
+    }, [friends, friendId]);
 
     if (!activeFriend) return null
     return (

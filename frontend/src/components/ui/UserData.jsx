@@ -4,7 +4,7 @@ import { FaPlus } from "react-icons/fa6";
 import { toast } from 'sonner';
 import apiClient from '@/lib/api-client';
 import { ADD_FRIEND_ROUTES } from '@/utils/constants';
-import ChatContext from '@/context/ChatContext';
+import { ChatContext } from '@/context/ChatContext';
 
 const UserData = ({ username, avatar, id, description }) => {
   const { setFriends } = useContext(ChatContext);

@@ -5,22 +5,14 @@ import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import authRoutes from "./routes/AuthRoutes.js";
 import morgan from "morgan";
-import http from "http";
-import { Server } from "socket.io";
-import uploadRoutes from './routes/UploadRoutes.js';
+import uploadRoutes from "./routes/UploadRoutes.js";
 import { AuthMiddleware } from "./middlewares/AuthMiddleware.js";
-import userRoutes from './routes/UserRoutes.js'
+import userRoutes from "./routes/UserRoutes.js";
+import { server, app } from "./server/socket.js";
+import MessageRoutes from './routes/MessageRoutes.js';
+
 dotenv.config();
 
-const app = express();
-const httpServer = http.createServer(app);
-export const io = new Server(httpServer, {
-  cors: {
-    origin: process.env.ORIGIN,
-    methods: ['GET', 'POST'],
-    credentials: true,
-  }
-});
 const PORT = process.env.PORT || 3001;
 const databaseURL = process.env.DATABASE_URL;
 
@@ -30,7 +22,7 @@ app.use(
     origin: process.env.ORIGIN,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
-  })
+  }),
 );
 
 app.use(express.json());
@@ -41,17 +33,11 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
-app.use('/api/upload', uploadRoutes);
-app.use('/api/user', AuthMiddleware, userRoutes);
-io.on("connection", (socket) => {
-  console.log("A socket connected", socket.id);
-  socket.on('chat_message', (msg) => {
-    console.log('Message received: ', msg);
-    io.emit('chat_message', msg);
-  });
-});
+app.use("/api/upload", uploadRoutes);
+app.use("/api/user", AuthMiddleware, userRoutes);
+app.use("/api/message", AuthMiddleware, MessageRoutes);
 
-httpServer.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 

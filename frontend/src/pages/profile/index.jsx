@@ -62,7 +62,7 @@ const Profile = () => {
 
       toast.success('Profile saved successfully.');
       setTimeout(() => {
-        navigate('/chat')
+        navigate('/chats')
       }, 500)
     } catch (error) {
       console.error("Error while saving the profile", error);

@@ -3,16 +3,19 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { Toaster } from './components/ui/sonner'
-import { SocketProvider } from './context/SocketContext'
-import { ChatContextProvider } from './context/ChatContext'
+import SocketProvider  from './context/SocketContext'
+import ChatProvider  from './context/ChatContext'
+import UserProvider from './context/UserContext'
 
 createRoot(document.getElementById('root')).render(
   <>
-    <ChatContextProvider>
-      <SocketProvider>
-        <App />
-      </SocketProvider>
-    </ChatContextProvider>
+    <UserProvider>
+      <ChatProvider>
+        <SocketProvider>
+          <App />
+        </SocketProvider>
+      </ChatProvider>
+    </UserProvider>
     <Toaster richColors position="top-right" />
   </>,
 )

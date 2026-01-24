@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useRef } from 'react'
 import { IoIosAttach } from "react-icons/io";
 import { BsSendFill } from "react-icons/bs";
 import { Textarea } from './textarea';
@@ -7,36 +7,40 @@ import { Button } from './button';
 import { v4 as uuidv4 } from 'uuid'
 import apiClient from '@/lib/api-client.js';
 import axios from 'axios';
-import ChatContext from '@/context/ChatContext';
-
+import {ChatContext} from '@/context/ChatContext';
+import {useParams} from 'react-router-dom'
+import { MESSAGE_ROUTES } from '@/utils/constants';
+import {toast} from 'sonner'
 const MessageInput = () => {
-  const senderId = uuidv4();
   const Socket = useContext(SocketContext);
   const [text, setText] = useState("");
-  const { activeFriend } = useContext(ChatContext);
-  
-  const handleSubmitText = async (e) => {
-    
+  const { friends } = useContext(ChatContext);
+  const { friendId } = useParams();
+  const activeFriend = friends.find(friend => friend._id.toString() === friendId);
+  const [isSendingMessage, setIsSendingMessage] = useState(false);
+
+  const handleSubmitText = async (e) => { 
     e.preventDefault();
+    setIsSendingMessage(true);
 
-    const message = text.trim();
-
-    if (message === "") return;
-
-    console.log(senderId)
-
-    Socket.emit("chat_message", {
-      message: message,
-      recieverId: activeFriend._id
-    });
-
-    console.log("message sent: ", message);
+    const messageContent = text.trim();
+    if (messageContent === "") return;
+    try {
+      const response = await apiClient.post(MESSAGE_ROUTES, {
+        messageContent: messageContent,
+        friendId: friendId
+      })
+      
+    } catch (error) {
+      console.error("Error in sending message: ", error);
+      toast.error('Error in sending message');
+    }
     setText("");
   }
 
   return (
     <form className='w-full' onSubmit={handleSubmitText}>
-      <div className='w-full h-16 py-4 px-3 rounded-4xl flex bg-white items-center shadow-md gap-4 border border-gray-500/70' >
+      <div className='w-full h-16 py-4 px-3 rounded-4xl flex bg-white items-center shadow-md gap-4 border border-gray-500/70'>
         <Button className='cursor-pointer active:scale-95 rounded-full w-12 h-12 flex items-center justify-center p-0! bg-gray-500/70! min-w-12' size='icon'>
           <IoIosAttach className='text-2xl! font-bold! text-white' />
         </Button>

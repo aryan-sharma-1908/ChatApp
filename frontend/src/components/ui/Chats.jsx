@@ -8,14 +8,17 @@ import AdityaProfile from '@/assets/AdityaProfile.jpeg'
 import SudhanshuProfile from '@/assets/SudhanshuProfile.jpeg'
 import RupamProfile from '@/assets/RupamProfile.jpeg'
 import PakshikProfile from '@/assets/PakshikProfile.jpeg'
-import Conversation from './Conversation'
+import Conversation from '../../pages/Conversation'
 import { toast } from 'sonner'
 import apiClient from '@/lib/api-client'
 import { FRIEND_ROUTES } from '@/utils/constants'
-import ChatContext from '@/context/ChatContext'
-
+import {ChatContext} from '@/context/ChatContext'
+import ConversationSkeleton from './skeletons/ConversationSkeleton'
+import {Outlet, useNavigate, useParams} from 'react-router-dom'
 const Chats = () => {
-  const { friends, isActiveChat, setIsActiveChat, activeFriend } = useContext(ChatContext);
+  const {friendId} = useParams();
+  const { friends, activeFriend } = useContext(ChatContext);
+  const navigate = useNavigate();
 
   return (
     <div className='h-screen flex items-stretch w-full'>
@@ -25,13 +28,13 @@ const Chats = () => {
         </div>
         <div className='chat group/users flex-1 overflow-y-auto'>
           {friends.map(friend => (
-            <Chat key={friend._id} friend={friend} onClick={() => setIsActiveChat(friend._id)} isActive={isActiveChat == friend._id} />
+            <Chat key={friend._id} friend={friend} isActive={friendId == friend._id} onClick={() => navigate(`/chats/${friend._id}`)}/>
           ))}
 
         </div>
       </div>
       <div className="messages w-[75%] bg-[url(/conversationbg.jpg)] h-full fixed right-0">
-        {isActiveChat ? <Conversation activeFriend={activeFriend} /> : ""}
+          <Outlet/>
       </div>
     </div>
   )

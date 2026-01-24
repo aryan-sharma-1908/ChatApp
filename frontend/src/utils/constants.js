@@ -17,3 +17,7 @@ export const PROFILE_ROUTES = `${USER_ROUTES}/profile`
 export const ADD_FRIEND_ROUTES = `${USER_ROUTES}/add-friend`
 
 export const FRIEND_ROUTES = `${USER_ROUTES}/friends`
+
+export const MESSAGE_ROUTES = '/api/message'
+
+export const USER_INFO_ROUTES = `${USER_ROUTES}/info`
