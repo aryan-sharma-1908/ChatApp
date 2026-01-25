@@ -2,20 +2,22 @@ import React, { useContext } from 'react'
 import MessagesHeader from '../../components/ui/MessagesHeader'
 import MessageInput from '../../components/ui/MessageInput'
 import ChatContext from '@/context/ChatContext'
+import MessagesList from '@/components/MessagesList'
 
 const Conversation = () => {
 
   return (
-    <div>
-          <div className="messages_header absolute top-0 w-full">
-            <MessagesHeader />
-          </div>
-          <div className='absolute w-full bottom-0'>
-            <div className="chats_input my-2 mx-4">
-              <MessageInput />
-            </div>
-          </div>
+    <div className='flex flex-col h-full'>
+      <div className="shrink-0">
+        <MessagesHeader />
+      </div>
+        <div className='flex-1 min-h-0 overflow-y-auto'>
+          <MessagesList />
         </div>
+      <div className="shrink-0 p-2">
+        <MessageInput />
+      </div>
+    </div>
   )
 }
 
