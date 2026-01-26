@@ -18,7 +18,7 @@ const UserData = ({ username, avatar, id, description }) => {
         return;
       }
 
-      const response = await apiClient.post(ADD_FRIEND_ROUTES, { friendId: id });
+      const response = await apiClient.post(ADD_FRIEND_ROUTES, { friendId: id }, {withCredentials: true});
       if (response.data.success) {
         toast.success("Friend added succesfully.");
         setIsFriend(true);

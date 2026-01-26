@@ -18,11 +18,9 @@ const Addfriends = () => {
 
   const handleOpenUsersList = async () => {
     try {
-      const response = await apiClient.get(NON_FRIENDS_ROUTES);
+      const response = await apiClient.get(NON_FRIENDS_ROUTES, {withCredentials: true});
 
       setUsersData(response.data.nonFriends);
-
-      console.log(usersData);
 
     } catch (error) {
       console.error("Error fetching non-friends: ", error);

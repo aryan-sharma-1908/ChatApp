@@ -1,8 +1,8 @@
 import {Router} from 'express';
-import { handleNewMessage } from '../controllers/MessageControllers.js';
+import { getOldMessages } from '../controllers/MessageControllers.js';
 
 const router = Router();
 
-router.post('/', handleNewMessage);
+router.get('/:friendId',getOldMessages);
 
 export default router;

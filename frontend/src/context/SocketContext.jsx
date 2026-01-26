@@ -1,38 +1,58 @@
-import { createContext, useEffect, useRef, useState } from "react";
-import { io } from "socket.io-client"
+import { createContext, useRef, useState } from "react";
+import { io } from "socket.io-client";
 import apiClient from "@/lib/api-client";
+
 export const SocketContext = createContext(null);
 
 const SocketProvider = ({ children }) => {
-    const socketRef = useRef(null);
+  const socketRef = useRef(null);
+  const [socket, setSocket] = useState(null);
+
+  const connectSocket = () => {
+    // Prevent duplicate connections
+    if (socketRef.current) return;
+    console.log('called');
     
-    const connectSocket = () => {
-        const socketInstance = io(apiClient.defaults.baseURL, {
-            withCredentials: true,
-        });
+    const socketInstance = io(apiClient.defaults.baseURL, {
+      withCredentials: true,
+      transports: ["websocket"],
+    });
 
-        socketRef.current = socketInstance;
+    socketRef.current = socketInstance;
+    setSocket(socketInstance);
 
-        socketRef.current.on('connect', () => {
-            console.log('Socket connected successfully.', socketRef.current.id)
-        })
+    socketInstance.on("connect", () => {
+      console.log("✅ Socket connected:", socketInstance.id);
+    });
 
-        socketRef.current.on('disconnect', () => {
-            console.log('Socket disconnected. ', socketRef.current.id)
-        })
+    socketInstance.on("disconnect", () => {
+      console.log("❌ Socket disconnected");
+    });
 
-        
-    }
+    socketInstance.on("connect_error", (err) => {
+      console.error("Socket connection error:", err.message);
+    });
+  };
 
-    const disconnectSocket = () => {
-        socketRef.current?.disconnect();
-        socketRef.current = null;
-    }
+  const disconnectSocket = () => {
+    if (!socketRef.current) return;
 
-    return (
-        <SocketContext.Provider value={{socket:socketRef,connectSocket,disconnectSocket}}>
-            {children}
-        </SocketContext.Provider>
-    )
-}
+    socketRef.current.disconnect();
+    socketRef.current = null;
+    setSocket(null);
+  };
+
+  return (
+    <SocketContext.Provider
+      value={{
+        socket:socket,
+        connectSocket:connectSocket,
+        disconnectSocket,
+      }}
+    >
+      {children}
+    </SocketContext.Provider>
+  );
+};
+
 export default SocketProvider;

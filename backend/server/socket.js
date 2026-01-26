@@ -1,56 +1,55 @@
 import Message from "../models/MessageModel.js";
-import Conversation from "../models/ConversationModel.js";
-import express from "express";
-import http from "http";
-import { Server } from "socket.io";
-import jwt from "jsonwebtoken";
-import User from "../models/UserModel.js";
-import cookie from "cookie";
+import { getOrCreateConversation } from "../service/ConversationService.js";
 
-const app = express();
-const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: ["http://localhost:5173"],
-    credentials: true,
-  },
-});
+const socketIdMap = new Map();
 
-const usersMap = {};
-export const getSocketIdFromUserId = (userId) => {
-  return usersMap[userId];
+
+export const initSocket = (io) => {
+
+  io.on("connection", (socket) => {
+
+    const userId = socket.userId;
+    if (!userId) return socket.disconnect();
+
+    socketIdMap.set(userId, socket.id);
+
+    console.log("A user connected: ", userId);
+
+    socket.on("join_conversation", (conversationId) => {
+      socket.join(conversationId);
+      console.log('Joined conversation: ',conversationId)
+    });
+
+    socket.on("send_message", async ({ text, friendId }) => {
+      try {
+        const senderId = socket.userId;
+        const conversation = await getOrCreateConversation(senderId, friendId);
+
+        const newMessage = await Message.create({
+          conversationId: conversation._id,
+          text,
+          senderId: senderId,
+          status: "sent",
+        });
+        console.log(newMessage)
+        io.to(conversation._id.toString()).emit("new_message", {
+          newMessage
+        });
+      } catch (error) {
+        console.error("Error in sendMessage: ", error);
+        socket.emit("message_error", {
+          message: "error in sending message",
+        });
+      }
+    });
+
+    socket.on("disconnect", () => {
+      socketIdMap.delete(userId);
+      console.log("A user disconnected: ", userId);
+    });
+  });
 };
 
 export const getOnlineUsers = () => {
-  return Object.keys(usersMap);
+  return Array.from(socketIdMap.keys());
 };
-
-io.on("connection", async (socket) => {
-  try {
-    console.log("A user connnected", socket.id);
-    const cookies = cookie.parse(socket.handshake.headers.cookie || "");
-    const token = cookies.token;
-    if (!token) {
-      socket.disconnect();
-      return;
-    }
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded._id);
-    if (!user) {
-      socket.disconnect();
-      return;
-    }
-    socket.userId = user._id.toString();
-    usersMap[socket.userId] = socket.id;
-    socket.emit("getOnlineUsers", getOnlineUsers);
-
-    socket.on("disconnect", () => {
-      delete usersMap[socket.userId];
-      console.log("A user disconnected", socket.id);
-    });
-  } catch (error) {
-    console.error("Error in decoding user id from token: ", error);
-    socket.disconnect();
-  }
-});
-export { app, server, io };

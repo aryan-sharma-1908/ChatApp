@@ -9,14 +9,9 @@ export const ChatContext = createContext();
 const ChatProvider = ({ children }) => {
     const [friends, setFriends] = useState([])
     const [isActiveChat, setIsActiveChat] = useState(null);
-    const activeFriend = useMemo(() => {
-        return friends.find(friend => (friend._id === isActiveChat));
-    },
-        [friends, isActiveChat]);
     const fetchFriends = async () => {
         try {
-            const response = await apiClient.get(FRIEND_ROUTES);
-            console.log('Fetched friends: ', response);
+            const response = await apiClient.get(FRIEND_ROUTES, {withCredentials : true});
             setFriends(response.data.friends || []);
         } catch (error) {
             console.error('Error fetching friends: ', error);
@@ -25,13 +20,12 @@ const ChatProvider = ({ children }) => {
         }
     }
     useEffect(() => {
-
         fetchFriends();
     }, [])
 
 
     return (
-        <ChatContext.Provider value={{ friends, isActiveChat, setIsActiveChat, setFriends, activeFriend }}>
+        <ChatContext.Provider value={{ friends, isActiveChat, setIsActiveChat, setFriends }}>
             {children}
         </ChatContext.Provider>
     )

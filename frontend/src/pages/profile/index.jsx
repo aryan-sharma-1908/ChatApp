@@ -49,7 +49,7 @@ const Profile = () => {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
-      })
+      }, {withCredentials: true})
 
       if (response_Image.data.success) {
         const imageURL = response_Image.data.url;

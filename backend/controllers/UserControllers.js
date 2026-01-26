@@ -158,7 +158,6 @@ export const getFriends = async (req, res) => {
                 message: "User not found"
             })
         }
-        console.log('friends: ', user.friends);
         res.status(200).json({
             success: true,
             message: "Friends fetched successfully",
@@ -184,8 +183,7 @@ export const getUserInfo = async (req, res) => {
                 message: "User not found."
             })
         }
-
-        res.status(204).json({
+        res.status(200).json({
             success: true,
             user,
             message: "User found."

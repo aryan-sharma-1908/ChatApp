@@ -8,13 +8,27 @@ import morgan from "morgan";
 import uploadRoutes from "./routes/UploadRoutes.js";
 import { AuthMiddleware } from "./middlewares/AuthMiddleware.js";
 import userRoutes from "./routes/UserRoutes.js";
-import { server, app } from "./server/socket.js";
 import MessageRoutes from './routes/MessageRoutes.js';
+import { SocketAuth } from "./server/middlewares/SocketAuth.js";
+import http from 'http';
+import {Server} from 'socket.io';
+import { initSocket } from "./server/socket.js";
 
 dotenv.config();
 
 const PORT = process.env.PORT || 3001;
 const databaseURL = process.env.DATABASE_URL;
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: [process.env.ORIGIN],
+    credentials: true
+  }
+});
+
+io.use(SocketAuth);
+initSocket(io);
 
 app.use(morgan("dev"));
 app.use(
@@ -24,7 +38,6 @@ app.use(
     credentials: true,
   }),
 );
-
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
@@ -35,7 +48,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/user", AuthMiddleware, userRoutes);
-app.use("/api/message", AuthMiddleware, MessageRoutes);
+app.use("/api/messages", AuthMiddleware, MessageRoutes);
 
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

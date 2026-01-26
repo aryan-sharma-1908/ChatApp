@@ -9,6 +9,7 @@
     },
     "allowJs": true,
     "checkJs": false,
+    "noEmit": true,
     "strict": false
   },
   "include": ["src"]

@@ -11,6 +11,7 @@ const UserProvider = ({ children }) => {
         try {
             setIsLoading(true);
             const response = await apiClient.get(USER_INFO_ROUTES, {withCredentials: true});
+            console.log(response.data.user);
             setUser(response.data.user);
         } catch (error) {
             console.error("Error in getting user Info");

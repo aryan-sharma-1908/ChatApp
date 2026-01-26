@@ -9,7 +9,6 @@ import apiClient from '@/lib/api-client.js'
 import { AUTH_ROUTES, SIGNUP_ROUTES } from '@/utils/constants'
 import { LOGIN_ROUTES } from '@/utils/constants'
 import { toast } from "sonner"
-import {SocketContext} from '@/context/SocketContext'
 
 const Auth = () => {
     const navigate = useNavigate();
@@ -18,7 +17,6 @@ const Auth = () => {
     const [confirmPassword, setConfirmPassword] = useState("")
     const [isLoading, setIsLoading] = useState(false);
     const [tab, setTab] = useState('signup');
-    const {connectSocket} = useContext(SocketContext);
     const handleLogin = async () => {
         setIsLoading(true);
 
@@ -33,7 +31,6 @@ const Auth = () => {
                 email: email,
                 password: password
             }, { withCredentials: true })
-            connectSocket();
             console.log(`${email} login successful`)
             toast.success("Login Successful.")
             setTimeout(() => {

@@ -7,7 +7,7 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import {ChatContext} from '@/context/ChatContext'
+import { ChatContext } from '@/context/ChatContext'
 import { useParams } from 'react-router-dom'
 
 const MessagesHeader = () => {
@@ -15,10 +15,7 @@ const MessagesHeader = () => {
     const { friendId } = useParams();
     const activeFriend = useMemo(() => {
         if (!friends?.length || !friendId) return null;
-        console.log({
-            friendId,
-            friends: friends.map(f => f._id),
-        });
+        
 
         return friends.find(
             friend => friend._id.toString() === friendId

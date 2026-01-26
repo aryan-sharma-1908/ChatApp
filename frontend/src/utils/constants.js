@@ -18,6 +18,6 @@ export const ADD_FRIEND_ROUTES = `${USER_ROUTES}/add-friend`
 
 export const FRIEND_ROUTES = `${USER_ROUTES}/friends`
 
-export const MESSAGE_ROUTES = '/api/message'
+export const MESSAGE_ROUTES = '/api/messages'
 
 export const USER_INFO_ROUTES = `${USER_ROUTES}/info`

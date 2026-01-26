@@ -17,9 +17,8 @@ import ConversationSkeleton from './skeletons/ConversationSkeleton'
 import {Outlet, useNavigate, useParams} from 'react-router-dom'
 const Chats = () => {
   const {friendId} = useParams();
-  const { friends, activeFriend } = useContext(ChatContext);
+  const { friends } = useContext(ChatContext);
   const navigate = useNavigate();
-
   return (
     <div className='h-screen flex items-stretch w-full'>
       <div className="chats w-[25%] bg-white h-full shadow-xl  border-r-gray-100 border-r ">
