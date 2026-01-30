@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { Textarea } from "@/components/ui/textarea"
@@ -10,8 +10,10 @@ import { FiEdit2 } from "react-icons/fi";
 import { toast } from "sonner"
 import apiClient from '@/lib/api-client';
 import { PROFILE_ROUTES, UPLOAD_ROUTES } from '@/utils/constants';
+import { UserContext } from '@/context/UserContext';
 
 const Profile = () => {
+  const { user, setUser } = useContext(UserContext);
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [name, setName] = useState('');
@@ -49,7 +51,7 @@ const Profile = () => {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
-      }, {withCredentials: true})
+      }, { withCredentials: true })
 
       if (response_Image.data.success) {
         const imageURL = response_Image.data.url;
@@ -58,6 +60,9 @@ const Profile = () => {
           avatar: imageURL,
           description
         })
+
+        if (response_info.data.success)
+          setUser(response_info.data.user);
       }
 
       toast.success('Profile saved successfully.');

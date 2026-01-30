@@ -18,7 +18,11 @@ const MessageSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ['sent', 'delivered', 'read', 'failed', 'pending'],
-        default: 'pending'
+        default: 'sent'
+    },
+    clientMessageId: {
+        type: String,
+        required: true
     }
 }, {timestamps: true})
 

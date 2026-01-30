@@ -6,7 +6,7 @@ export const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const getUserInfo = async () => {
         try {
             setIsLoading(true);
@@ -26,7 +26,7 @@ const UserProvider = ({ children }) => {
     },[])
 
     return (
-        <UserContext.Provider value={{ user: user, loading: isLoading }} >
+        <UserContext.Provider value={{ user: user, loading: isLoading, setUser }} >
             {children}
         </UserContext.Provider>
     )

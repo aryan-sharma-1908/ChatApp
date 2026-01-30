@@ -9,14 +9,17 @@ import apiClient from '@/lib/api-client.js'
 import { AUTH_ROUTES, SIGNUP_ROUTES } from '@/utils/constants'
 import { LOGIN_ROUTES } from '@/utils/constants'
 import { toast } from "sonner"
+import { UserContext } from '@/context/UserContext'
 
 const Auth = () => {
-    const navigate = useNavigate();
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
     const [isLoading, setIsLoading] = useState(false);
     const [tab, setTab] = useState('signup');
+    const {setUser} = useContext(UserContext);
+    const navigate = useNavigate();
+    
     const handleLogin = async () => {
         setIsLoading(true);
 
@@ -31,11 +34,9 @@ const Auth = () => {
                 email: email,
                 password: password
             }, { withCredentials: true })
-            console.log(`${email} login successful`)
+            setUser(response.data.user)
             toast.success("Login Successful.")
-            setTimeout(() => {
-                navigate("/profile")
-            }, 500)
+            navigate('/chats');
         } catch (error) {
             console.error('Something went wrong while logging in! ', error)
             toast.error('Error occurred during login!')
@@ -82,6 +83,7 @@ const Auth = () => {
             setConfirmPassword("");
         }
     }
+
     return (
         <div className='h-screen w-screen flex items-center justify-center'>
             <div className='h-[80vh] bg-white border-2 border-white text-opacity-90 shadow-2xl w-[80vw] md:w-[90vw] lg:w-[70vw] xl:w-[60vw] rounded-3xl grid xl:grid-cols-2'>

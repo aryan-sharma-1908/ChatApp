@@ -8,22 +8,27 @@ import Conversation from './pages/Conversation/index'
 import ConversationSkeleton from './components/ui/skeletons/ConversationSkeleton'
 import { SocketContext } from './context/SocketContext'
 import { UserContext } from './context/UserContext'
+import ProtectedRoute from './route/ProtectedRoute'
+
 const App = () => {
-  const {user} = useContext(UserContext);
-  const {connectSocket} = useContext(SocketContext);
+  const { user } = useContext(UserContext);
+  const { connectSocket } = useContext(SocketContext);
   useEffect(() => {
-    if(user) {
+    console.log("User: ", user);
+    if (user) {
       connectSocket();
     }
-  },[user])
-  
+  }, [user])
+
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/auth' element={<Auth />}></Route>
-        <Route path='/chats' element={<Chats />}>
-          <Route index element={<ConversationSkeleton/>}></Route>
-          <Route path=':friendId' element={<Conversation/>}></Route>
+        <Route element={<ProtectedRoute/>}>
+          <Route path='/chats' element={<Chats />}>
+            <Route index element={<ConversationSkeleton />}></Route>
+            <Route path=':friendId' element={<Conversation />}></Route>
+          </Route>
         </Route>
         <Route path='/profile' element={<Profile />}></Route>
         <Route path='*' element={<Navigate to='/auth' />}></Route>
