@@ -9,7 +9,7 @@ import uploadRoutes from "./routes/UploadRoutes.js";
 import { AuthMiddleware } from "./middlewares/AuthMiddleware.js";
 import userRoutes from "./routes/UserRoutes.js";
 import MessageRoutes from './routes/MessageRoutes.js';
-import { SocketAuth } from "./server/middlewares/SocketAuth.js";
+import { AttachIo, SocketAuth } from "./server/middlewares/SocketAuth.js";
 import http from 'http';
 import {Server} from 'socket.io';
 import { initSocket } from "./server/socket.js";
@@ -30,6 +30,7 @@ const io = new Server(server, {
 io.use(SocketAuth);
 initSocket(io);
 
+app.use(AttachIo(io));
 app.use(morgan("dev"));
 app.use(
   cors({

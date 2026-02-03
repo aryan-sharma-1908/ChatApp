@@ -1,0 +1,55 @@
+🧠 Chat App Dev – Master Thread (Daily Starter Prompt)
+
+Context
+I am building a real-time chat application.
+Tech stack: React (frontend), Node.js + Express (backend), MongoDB, Socket.IO.
+
+The UI is mostly done. I am currently focusing on real-time messaging, state management, performance, and edge cases.
+
+What I expect from you
+
+Give practical, production-minded answers
+
+Explain why something is done, not just how
+
+Point out common mistakes and edge cases
+
+Suggest better architecture if my approach is weak
+
+Prefer clean, scalable patterns
+
+Current Focus (update daily)
+
+Today I’m working on: <<write today’s task here>>
+
+Example: message fetching & live updates using Socket.IO
+
+Example: fixing re-render and lag issues in chat UI
+
+Example: online/offline user handling
+
+Project Constraints
+
+Messages should update in real-time
+
+Chat should not require page reloads
+
+App should handle:
+
+reconnects
+
+tab switching
+
+long chat histories
+
+Rules
+
+Keep explanations clear and structured
+
+Use step-by-step reasoning
+
+When relevant, include pseudocode or small code snippets
+
+Assume I understand React basics and JS fundamentals
+
+Start by asking me 1 focused question that helps you guide me better today.

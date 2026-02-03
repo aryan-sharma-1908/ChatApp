@@ -18,7 +18,7 @@ const Addfriends = () => {
 
   const handleOpenUsersList = async () => {
     try {
-      const response = await apiClient.get(NON_FRIENDS_ROUTES, {withCredentials: true});
+      const response = await apiClient.get(NON_FRIENDS_ROUTES, { withCredentials: true });
 
       setUsersData(response.data.nonFriends);
 
@@ -40,14 +40,21 @@ const Addfriends = () => {
           <DialogHeader>
             <DialogTitle className='text-black text-3xl pl-2'>Add friends</DialogTitle>
             <DialogDescription>
-              
+
             </DialogDescription>
           </DialogHeader>
           {
-                usersData.map(userData => (
-                  <UserData key={userData._id} username={userData.name} avatar={userData.avatar} id={userData._id} description={userData.description}/>
-                ))
-              }
+            usersData.map(userData => (
+              <UserData
+                key={userData._id}
+                name={userData.name}
+                avatar={userData.avatar}
+                _id={userData._id}
+                description={userData.description}
+                onAdded={() => setUsersData(prev => prev.filter(u => u._id !== userData._id))}
+              />
+            ))
+          }
         </DialogContent>
       </Dialog>
     </>

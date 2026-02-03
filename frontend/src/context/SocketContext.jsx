@@ -45,8 +45,8 @@ const SocketProvider = ({ children }) => {
   return (
     <SocketContext.Provider
       value={{
-        socket:socket,
-        connectSocket:connectSocket,
+        socket,
+        connectSocket,
         disconnectSocket,
       }}
     >

@@ -136,9 +136,13 @@ export const addFriendIfNotExists = async (req, res) => {
       $addToSet: { friends: userId },
     });
 
+    // Fetch the newly added friend's public info to return to the client
+    const newFriend = await User.findById(friendId).select("name avatar description");
+
     res.status(200).json({
       success: true,
       message: "Friend added successfully",
+      newFriend,
     });
   } catch (error) {
     console.error("Error in addFriendIfNotExists: ", error);

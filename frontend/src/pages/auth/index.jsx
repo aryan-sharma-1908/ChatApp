@@ -17,7 +17,7 @@ const Auth = () => {
     const [confirmPassword, setConfirmPassword] = useState("")
     const [isLoading, setIsLoading] = useState(false);
     const [tab, setTab] = useState('signup');
-    const {setUser} = useContext(UserContext);
+    const {setUser, getUserInfo} = useContext(UserContext);
     const navigate = useNavigate();
     
     const handleLogin = async () => {
@@ -34,7 +34,11 @@ const Auth = () => {
                 email: email,
                 password: password
             }, { withCredentials: true })
-            setUser(response.data.user)
+            await getUserInfo();
+            setUser(prev => ({
+                ...prev,
+                ...response.data.user
+            }));
             toast.success("Login Successful.")
             navigate('/chats');
         } catch (error) {
@@ -44,7 +48,6 @@ const Auth = () => {
             setIsLoading(false)
             setEmail("")
             setPassword("")
-            
         }
     }
 

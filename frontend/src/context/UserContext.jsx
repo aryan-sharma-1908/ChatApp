@@ -12,9 +12,12 @@ const UserProvider = ({ children }) => {
             setIsLoading(true);
             const response = await apiClient.get(USER_INFO_ROUTES, {withCredentials: true});
             console.log(response.data.user);
-            setUser(response.data.user);
+            setUser(prev => ({
+                ...prev,
+                ...response.data.user
+            }));
         } catch (error) {
-            console.error("Error in getting user Info");
+            console.error("Error in getting user Info: ", error);
             setUser(null);
         } finally {
             setIsLoading(false);
@@ -26,7 +29,7 @@ const UserProvider = ({ children }) => {
     },[])
 
     return (
-        <UserContext.Provider value={{ user: user, loading: isLoading, setUser }} >
+        <UserContext.Provider value={{ user: user, loading: isLoading, setUser,getUserInfo }} >
             {children}
         </UserContext.Provider>
     )

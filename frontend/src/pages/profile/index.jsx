@@ -13,7 +13,7 @@ import { PROFILE_ROUTES, UPLOAD_ROUTES } from '@/utils/constants';
 import { UserContext } from '@/context/UserContext';
 
 const Profile = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser, getUserInfo } = useContext(UserContext);
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [name, setName] = useState('');
@@ -60,9 +60,11 @@ const Profile = () => {
           avatar: imageURL,
           description
         })
-
+        
         if (response_info.data.success)
-          setUser(response_info.data.user);
+          setUser(prev => ({
+          ...prev,
+          ...response_info.data.user}));
       }
 
       toast.success('Profile saved successfully.');

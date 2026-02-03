@@ -16,7 +16,7 @@ const MessagesList = ({messages}) => {
                 <MessageBubble key={message._id ?? message.clientMessageId} text={message.text} from={message.senderId === user._id ? 'me' : 'them'} time={new Date(message.createdAt).toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",
-                })} status={message.status}
+                })} status={message.status} deleted
                 />
 
             ))}

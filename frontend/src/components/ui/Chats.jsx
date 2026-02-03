@@ -15,10 +15,22 @@ import { FRIEND_ROUTES } from '@/utils/constants'
 import {ChatContext} from '@/context/ChatContext'
 import ConversationSkeleton from './skeletons/ConversationSkeleton'
 import {Outlet, useNavigate, useParams} from 'react-router-dom'
+import { SocketContext } from '@/context/SocketContext'
+import { UserContext } from '@/context/UserContext'
 const Chats = () => {
-  const {friendId} = useParams();
+  const { friendId } = useParams();
   const { friends } = useContext(ChatContext);
   const navigate = useNavigate();
+  const { connectSocket, disconnectSocket } = useContext(SocketContext);
+  const { user } = useContext(UserContext);
+  useEffect(() => {
+    if (user) {
+      connectSocket();
+    }
+    return () => {
+      disconnectSocket();
+    };
+  }, [user]);
   return (
     <div className='h-screen flex items-stretch w-full'>
       <div className="chats w-[25%] bg-white h-full shadow-xl  border-r-gray-100 border-r ">

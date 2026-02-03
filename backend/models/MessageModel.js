@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 const MessageSchema = new mongoose.Schema({
     senderId : {
@@ -23,6 +23,13 @@ const MessageSchema = new mongoose.Schema({
     clientMessageId: {
         type: String,
         required: true
+    },
+    deletedFor: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }],
+    deletedAt: {
+        type: Date
     }
 }, {timestamps: true})
 

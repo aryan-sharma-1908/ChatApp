@@ -7,14 +7,14 @@ import { MessageContext } from '@/context/MesageContext'
 import { v4 as uuid } from 'uuid'
 import { ChatContext } from '@/context/ChatContext'
 import apiClient from '@/lib/api-client'
-import { MESSAGE_ROUTES } from '@/utils/constants'
+import { DELETE_ALL_MESSAGES_ROUTES, MESSAGE_ROUTES } from '@/utils/constants'
 import { SocketContext } from '@/context/SocketContext'
 import { startTransition } from 'react'
 import { UserContext } from '@/context/UserContext'
+import { toast } from 'sonner'
 
 const Conversation = () => {
   const { friendId } = useParams();
-
   const { socket } = useContext(SocketContext);
   const { friends } = useContext(ChatContext);
   const { user } = useContext(UserContext);
@@ -43,12 +43,12 @@ const Conversation = () => {
         setMessages([]);
       }
     }
-    
+
     getOldMessages();
   }, [activeFriend?._id]);
-  
+
   useEffect(() => {
-    if (!socket || !activeFriend?._id) return;
+    if (!socket || !conversationId) return;
     socket.emit('join_conversation', conversationId);
 
     const handler = (socketMessage) => {
@@ -61,6 +61,18 @@ const Conversation = () => {
 
     return () => socket.off('new_message', handler);
   }, [socket, activeFriend?._id, messages]);
+
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleMessagesDeleted = ({ conversationId }) => {
+      setMessages([]);
+    }
+
+    socket.on('messages_deleted', handleDeleteAllMessages);
+
+    return () => { socket.off('messages_deleted', handleDeleteAllMessages); }
+  }, [socket])
 
 
   const handleSendMessage = (messageText) => {
@@ -84,10 +96,25 @@ const Conversation = () => {
     })
   }
 
+  const handleDeleteAllMessages = async () => {
+    try {
+      const deletAllRoute = `${DELETE_ALL_MESSAGES_ROUTES}/${friendId}`
+      const response = await apiClient.delete(`${deletAllRoute}`);
+
+      if (response.data.success) {
+        toast.success('All messages are deleted.')
+      }
+
+    } catch (error) {
+      console.error("Error in deleteAllMessages: ", error);
+      toast.error("Error while deleting message");
+    }
+  }
+
   return (
     <div className='flex flex-col h-full'>
       <div className="shrink-0">
-        <MessagesHeader />
+        <MessagesHeader onDeleteAll={handleDeleteAllMessages} />
       </div>
       <div className='flex-1 min-h-0 overflow-y-auto'>
         <MessagesList messages={optimisticMessages} />

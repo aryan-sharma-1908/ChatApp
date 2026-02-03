@@ -12,13 +12,7 @@ import ProtectedRoute from './route/ProtectedRoute'
 
 const App = () => {
   const { user } = useContext(UserContext);
-  const { connectSocket } = useContext(SocketContext);
-  useEffect(() => {
-    console.log("User: ", user);
-    if (user) {
-      connectSocket();
-    }
-  }, [user])
+  
 
   return (
     <BrowserRouter>

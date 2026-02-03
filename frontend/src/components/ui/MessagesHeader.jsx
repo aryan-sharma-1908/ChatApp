@@ -2,25 +2,25 @@ import React, { useContext, useMemo } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from '@/components/ui/button'
 import { SlOptionsVertical } from "react-icons/sl"
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from "@/components/ui/tooltip"
-import { ChatContext } from '@/context/ChatContext'
 import { useParams } from 'react-router-dom'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { ChatContext } from '@/context/ChatContext'
+import { MdDeleteOutline } from "react-icons/md";
+import apiClient from '@/lib/api-client'
+import { DELETE_ALL_MESSAGES_ROUTES } from '@/utils/constants'
 
-const MessagesHeader = () => {
+const MessagesHeader = ({ onDeleteAll }) => {
     const { friends } = useContext(ChatContext);
     const { friendId } = useParams();
-    const activeFriend = useMemo(() => {
-        if (!friends?.length || !friendId) return null;
-        
-
-        return friends.find(
-            friend => friend._id.toString() === friendId
-        );
-    }, [friends, friendId]);
+    const activeFriend = friends.find(friend => friend._id === friendId);
 
     if (!activeFriend) return null
     return (
@@ -36,25 +36,27 @@ const MessagesHeader = () => {
                     <div className="user_name text-[#2B2A2A] text-2xl font-bold">{activeFriend.name}</div>
                     <p className='font-medium text-gray-500'>click here to get {activeFriend.name} info</p>
                 </div>
-
             </div>
             <div>
-                <Tooltip>
-                    <Button size='icon-lg' className='relative overflow-hidden rounded-full
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button size='icon-lg' className='relative overflow-hidden rounded-full
                 before:content-[""] before:bg-transparent
-                before:scale-80 hover:before:bg-[#f1f1f1] before:absolute hover:before:scale-100 before:duration-300 before:inset-0 before:rounded-full cursor-pointer transition-transform'>
-                        <TooltipTrigger asChild>
+                before:scale-80 hover:before:bg-[#f1f1f1] before:absolute hover:before:scale-100 before:duration-300 before:inset-0 before:rounded-full cursor-pointer transition-transform' >
                             <span className='relative z-10 cursor-pointer'><SlOptionsVertical /></span>
-
-                        </TooltipTrigger>
-                    </Button>
-                    <TooltipContent>
-                        <p>Menu</p>
-                    </TooltipContent>
-                </Tooltip>
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <DropdownMenuGroup>
+                            <DropdownMenuItem className='flex justify-between items-center cursor-pointer px-3' onSelect={(e) => {
+                                e.preventDefault();
+                                onDeleteAll();
+                            }}><MdDeleteOutline className='text-red-500 text-lg' /><p className='text-red-500 text-[16px]'>Delete</p></DropdownMenuItem>
+                        </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                </DropdownMenu>
 
             </div>
-
         </div>
     )
 }

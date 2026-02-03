@@ -24,3 +24,10 @@ export const SocketAuth = (socket, next) => {
     next(new Error("Authentication failed!"));
   }
 };
+
+export const AttachIo = (io) => {
+    return (req,res,next) => {
+        req.io = io;
+        next();
+    }
+}
